@@ -14,6 +14,7 @@ const HandleArray= () => {
     }
 
     const removeAllB=(letter)=>{
+        console.log(letter)
         setArray(oldArray=> {
             return (oldArray.filter(e=> e !== letter))
         })
@@ -40,15 +41,19 @@ const HandleArray= () => {
         })
     }
 
+    const addLetterInIndex = (letter, index) => {
+        setArray(oldArray=>{
+            return [oldArray.slice(0, index), letter, oldArray.slice(index)]
+        })
+    }
+
     return (
         <>
             {array.join(',')}
             <br/>
             <button onClick={removeIstElement}>Remove First Element: {array.join(',')}</button>
             <br/>
-            <button onClick={()=> {
-                return removeAllB('B')
-            }}>Remove (B) Element = {array.join(',')}</button>
+            <button onClick={()=> { return removeAllB('B')}}>Remove (B) Element = {array.join(',')}</button>
             <br/>
             <button onClick={()=> {
                 return addAinStart('A')
@@ -57,6 +62,8 @@ const HandleArray= () => {
             <button onClick={()=> { return addZinLast('Z')}}>Add (Z) In End: {array.join(',')}</button>
             <br/>
             <button onClick={()=> { return updateAtoH('A','A1')}}>Update (A to H) In End: {array.join(',')}</button>
+            <br/>
+            <button onClick={()=> { return addLetterInIndex('C1',1)}}>Add  (C1) to 1st Index: {array.join(',')}</button>
         </>
 
     )
