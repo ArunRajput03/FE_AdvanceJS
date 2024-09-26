@@ -1,11 +1,15 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const Todo = () => {
     const [todos, setTodos]= useState([])
-    const [task, setTask]= useState({})
     const [taskName, setTaskName]= useState({name: "",id: ""})
     const [editFlag, setEditFlag]=useState(false)
+    const inputRef = useRef()
+    const inputEditRef = useRef()
 
+    useEffect(()=>{
+        inputRef.current.focus()
+    },[])
     const addTask=()=>{
         setTodos(oldTodos=> {
             return [...oldTodos,{
@@ -17,12 +21,11 @@ const Todo = () => {
             name:"",
             id: ""
         })
+        inputRef.current.focus()
     }
 
     const taskUpdate=()=>{
-        debugger
         let taskItemIndex = todos.findIndex(e=> e.id === taskName.id )
-        console.log(taskItemIndex)
 
         if (taskItemIndex===0) {
             setTodos(oldTodos=> {
@@ -31,9 +34,6 @@ const Todo = () => {
         }
         else{
             setTodos(oldTodos=> {
-                console.log(oldTodos.slice(0, taskItemIndex))
-                console.log(taskName)
-                console.log(oldTodos.slice(taskItemIndex+1))
                 return [...oldTodos.slice(0, taskItemIndex) ,{id: taskName.id,name: taskName.name}, ...oldTodos.slice(taskItemIndex+1)]
             })
         }
@@ -41,12 +41,6 @@ const Todo = () => {
         setTaskName({
             name: "",
             id: ""
-        })
-    }
-
-    const addLetterInIndex = (letter, index) => {
-        setArray(oldArray=>{
-            return [oldArray.slice(0, index), letter, oldArray.slice(index)]
         })
     }
      
@@ -59,6 +53,9 @@ const Todo = () => {
                 id: taskId
             })
             setEditFlag(true)
+
+            if (inputEditRef?.current && inputEditRef?.current !== undefined)
+                inputEditRef.current.focus()
         }
     }
 
@@ -76,7 +73,7 @@ const Todo = () => {
                     (editFlag ? (
                         <p id="divEdit">
                             <label>Update Task:</label>
-                            <input type="text" value={taskName.name} onChange={(e)=>{
+                            <input ref={inputEditRef} type="text" value={taskName.name} onChange={(e)=>{
                                 setTaskName({name:e.target.value, id: taskName.id})
                             }}/>
                             <button onClick={taskUpdate}>Update</button> 
@@ -86,7 +83,7 @@ const Todo = () => {
                         :
                         <p id="divAdd">
                             <label>Enter Task:</label>
-                            <input type="text" value={taskName.name} onChange={(e)=>{
+                            <input ref={inputRef} type="text" value={taskName.name} onChange={(e)=>{
                                 setTaskName({name:e.target.value, id: taskName.id})
                             }}/>
                             <button onClick={addTask}>Add Task</button>
