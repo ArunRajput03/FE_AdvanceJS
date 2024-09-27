@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Child from './components/child'
 import NewComponent from './components/Fragment'
+import ConsumeCustomHooks from './components/ConsumeCustomHooks'
 
 function App() {
   const [counter, setCounter] = useState(0)
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <>
+      <ConsumeCustomHooks/>
       <h1>Counter</h1>
       <button onClick={incrementCounter} name="btnIncrement">+</button>
       {counter}
